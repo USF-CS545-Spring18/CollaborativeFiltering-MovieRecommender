@@ -111,7 +111,6 @@ public class UsersList {
             }
             current = current.next();
         }
-        // FILL IN CODE
 
         return mostSimilarUser;
 
