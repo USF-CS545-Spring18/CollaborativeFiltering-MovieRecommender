@@ -97,7 +97,8 @@ public class UserNode {
      */
     public int[] getFavoriteMovies(int n) {
         // FILL IN CODE
-        MovieRatingsList best = movieRatings.getNBestRankedMovies(n);
+        MovieRatingsList best = movieRatings.sublist(5,5);
+        best = best.getNBestRankedMovies(n);
         MovieRatingNode cur1 = best.getHead();
         MovieRatingNode cur2 = best.getHead();
         int max = 0;
@@ -127,6 +128,7 @@ public class UserNode {
     public int[] getLeastFavoriteMovies(int n) {
         // FILL IN CODE
         MovieRatingsList worst = movieRatings.getNWorstRankedMovies(n);
+        worst = worst.sublist(1,1);
         MovieRatingNode cur1 = worst.getHead();
         MovieRatingNode cur2 = worst.getHead();
         int max = 0;

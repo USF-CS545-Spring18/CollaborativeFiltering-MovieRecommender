@@ -117,7 +117,6 @@ public class MovieRecommender {
             for(int i = 0; i < bestList.length; i++){
                 if(!user.ifSeen(bestList[i])){
                     String title = movieMap.get(bestList[i]) + "\n";
-                    System.out.println(title);
                     writer.write(title);
                 }
             }
@@ -149,7 +148,9 @@ public class MovieRecommender {
         // rated).
         // FILL IN CODE
         UserNode user = usersData.get(userid);
+        System.out.println("\n************userid************" + userid);
         UserNode best = usersData.findMostSimilarUser(userid);
+        System.out.println("\n************bestid************" + best.getId());
         int[] bestList = best.getLeastFavoriteMovies(num);
 
         Path outPath = Paths.get(filename);

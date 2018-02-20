@@ -165,13 +165,9 @@ public class MovieRatingsList implements Iterable<MovieRatingNode> {
 			}
 		}
 		double up = n * exy - ex * ey;
-//		System.out.println(up);
 		double downLeft = Math.sqrt(n * ex2 - ex * ex);
-//		System.out.println(downLeft);
-		double downRight = Math.sqrt(n * ey2 - ey * ey);
-//		System.out.println(downRight);
+		double downRight = Math.sqrt(n * ey2 - ey * ey);;
 		double down = downLeft * downRight;
-//		System.out.println(down);
 		similarity = up / down;
         return similarity;
 
@@ -216,7 +212,6 @@ public class MovieRatingsList implements Iterable<MovieRatingNode> {
 		MovieRatingNode current = head;
 		String result = "";
 		while(current != null){
-			System.out.print(current.getMovieId() + ":" + current.getMovieRating() + "; ");
 			result = result + current.getMovieId() + ":" + current.getMovieRating() + "; ";
 			current = current.next();
 		}
@@ -282,6 +277,8 @@ public class MovieRatingsList implements Iterable<MovieRatingNode> {
 			iter++;
 		}
 
+//		result.print();
+
 		return result; // don't forget to change
 	}
 
@@ -314,6 +311,7 @@ public class MovieRatingsList implements Iterable<MovieRatingNode> {
 			p1 = p1.next();
 		}
 		// FILL IN CODE
+		result.print();
 		return result; // don't forget to change
 	}
 
@@ -376,7 +374,7 @@ public class MovieRatingsList implements Iterable<MovieRatingNode> {
 		public MovieRatingsListIterator(int index) {
 			// FILL IN CODE
 			if(index == 0){
-				curr = new MovieRatingNode(-2, -1);
+				curr = new MovieRatingNode(-1, 3);
 				curr.setNext(head);
 				return;
 			}
