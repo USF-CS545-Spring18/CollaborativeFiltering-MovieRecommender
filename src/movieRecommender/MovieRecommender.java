@@ -1,6 +1,8 @@
 package movieRecommender;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 /** MovieRecommender. A class that is responsible for:
@@ -40,6 +42,26 @@ public class MovieRecommender {
      */
     private void loadMovies(String movieFilename) {
         // FILL IN CODE
+        try(BufferedReader reader = new BufferedReader(new FileReader(movieFilename))){
+            String line = reader.readLine();
+            line = reader.readLine();
+            while(line != null){
+                String[] part1 = line.split("\"");
+                if(part1.length == 1){
+                   String[] part2 = line.split(",");
+                   int id = Integer.parseInt(part2[0]);
+                   String title = part2[1];
+                   movieMap.put(id, title);
+                }else{
+                    int id = Integer.parseInt(part1[0].replaceAll(",", ""));
+                    String title = part1[1];
+                    movieMap.put(id, title);
+                }
+                line = reader.readLine();
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -49,6 +71,20 @@ public class MovieRecommender {
      */
     private void loadRatings(String ratingsFilename) {
         // FILL IN CODE
+        try(BufferedReader reader = new BufferedReader(new FileReader(ratingsFilename))){
+            String line = reader.readLine();
+            line = reader.readLine();
+            while(line != null){
+                String[] part = line.split(",");
+                int userId = Integer.parseInt(part[0]);
+                int movieId = Integer.parseInt(part[1]);
+                double rating = Double.parseDouble(part[2]);
+                usersData.insert(userId,movieId,rating);
+                line = reader.readLine();
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -71,6 +107,24 @@ public class MovieRecommender {
         // Recommend only the movies that userid has not seen (has not
         // rated).
         // FILL IN CODE
+        UserNode user = usersData.get(userid);
+        UserNode best = usersData.findMostSimilarUser(userid);
+        int[] bestList = best.getFavoriteMovies(num);
+
+        Path outPath = Paths.get(filename);
+        outPath.getParent().toFile().mkdirs();
+        try(PrintWriter writer = new PrintWriter(filename)){
+            for(int i = 0; i < bestList.length; i++){
+                if(!user.ifSeen(bestList[i])){
+                    String title = movieMap.get(bestList[i]) + "\n";
+                    System.out.println(title);
+                    writer.write(title);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -94,6 +148,25 @@ public class MovieRecommender {
         // Anti-recommend only the movies that userid has not seen (has not
         // rated).
         // FILL IN CODE
+        UserNode user = usersData.get(userid);
+        UserNode best = usersData.findMostSimilarUser(userid);
+        int[] bestList = best.getLeastFavoriteMovies(num);
+
+        Path outPath = Paths.get(filename);
+        outPath.getParent().toFile().mkdirs();
+        try(PrintWriter writer = new PrintWriter(filename)){
+            for(int i = 0; i < bestList.length; i++){
+                if(!user.ifSeen(bestList[i])){
+                    String title = movieMap.get(bestList[i]) + "\n";
+                    System.out.println(title);
+                    writer.write(title);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 }

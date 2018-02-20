@@ -51,6 +51,12 @@ public class UserNode {
 
     }
 
+    public String toString(){
+        String s = "(" + userId + ") ";
+        s = s + movieRatings.toString();
+        return s;
+    }
+
 
     /**
      * Add rating info for a given movie to the MovieRatingsList
@@ -65,6 +71,24 @@ public class UserNode {
     }
 
     /**
+     * return if the user has seen the movie;
+     * @param movieId
+     * @return
+     */
+    public boolean ifSeen(int movieId){
+        MovieRatingNode head = movieRatings.getHead();
+        MovieRatingNode current = head;
+        while(current != null){
+            int id = current.getMovieId();
+            if(movieId == id){
+                return true;
+            }
+            current = current.next();
+        }
+        return false;
+    }
+
+    /**
      * Returns an array of user's favorite movies (up to n). These are the
      * movies that this user gave the rating of 5.
      *
@@ -73,8 +97,24 @@ public class UserNode {
      */
     public int[] getFavoriteMovies(int n) {
         // FILL IN CODE
+        MovieRatingsList best = movieRatings.getNBestRankedMovies(n);
+        MovieRatingNode cur1 = best.getHead();
+        MovieRatingNode cur2 = best.getHead();
+        int max = 0;
+        while(cur1 != null){
+            max++;
+            cur1 = cur1.next();
+        }
+        int[] result = new int[max];
+        int index = 0;
+        while (cur2 != null){
+            int id = cur2.getMovieId();
+            result[index] = id;
+            index++;
+            cur2 = cur2.next();
+        }
 
-        return null; // don't forget to change
+        return result; // don't forget to change
     }
 
     /**
@@ -86,8 +126,24 @@ public class UserNode {
      */
     public int[] getLeastFavoriteMovies(int n) {
         // FILL IN CODE
+        MovieRatingsList worst = movieRatings.getNWorstRankedMovies(n);
+        MovieRatingNode cur1 = worst.getHead();
+        MovieRatingNode cur2 = worst.getHead();
+        int max = 0;
+        while(cur1 != null){
+            max++;
+            cur1 = cur1.next();
+        }
+        int[] result = new int[max];
+        int index = 0;
+        while (cur2 != null){
+            int id = cur2.getMovieId();
+            result[index] = id;
+            index++;
+            cur2 = cur2.next();
+        }
 
-        return null; // don't forget to change
+        return result; // don't forget to change
     }
 
     /**

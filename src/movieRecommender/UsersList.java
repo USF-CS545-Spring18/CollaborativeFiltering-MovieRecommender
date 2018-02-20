@@ -1,6 +1,9 @@
 package movieRecommender;
 
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 /**
  * A custom linked list that stores user info. Each node in the list is of type
  * UserNode.
@@ -23,7 +26,25 @@ public class UsersList {
     public void insert(int userId, int movieId, double rating) {
 
           // Check if UserNode already exists;
-          // if not, create it and append to this list.
+        UserNode cur = head;
+        boolean flag = false;
+        while(cur != null){
+            int id = cur.getId();
+            if(id == userId){
+                flag = true;
+                cur.insert(movieId, rating);
+                break;
+            }
+            cur = cur.next();
+        }
+        // if not, create it and append to this list.
+        if(!flag){
+            UserNode newNode = new UserNode(userId);
+            append(newNode);
+            newNode.insert(movieId, rating);
+        }
+
+
           // Then call insert(movieId, rating) method on the UserNode
           // FILL IN CODE
 
@@ -36,6 +57,14 @@ public class UsersList {
     public void append(UserNode newNode) {
         // This is where tail will come in handy
         // FILL IN CODE
+        if(head == null){
+            head = newNode;
+            tail = newNode;
+            return;
+        }
+        tail.setNext(newNode);
+        tail = newNode;
+
     }
 
     /** Return a UserNode given userId
@@ -45,8 +74,15 @@ public class UsersList {
      */
     public UserNode get(int userId) {
         // FILL IN CODE
+        UserNode cur = head;
+        while (cur != null){
+            if(cur.getId() == userId){
+                break;
+            }
+            cur = cur.next();
+        }
 
-        return null; // don't forget to change it
+        return cur; // don't forget to change it
     } // get method
 
 
@@ -61,8 +97,21 @@ public class UsersList {
      */
     public UserNode findMostSimilarUser(int userid) {
         UserNode mostSimilarUser = null;
+        UserNode user = get(userid);
+        UserNode current = head;
+        double highest = -1;
+        double newOne = -1;
+        while(current != null){
+            if(current.getId() != userid){
+                newOne = user.computeSimilarity(current);
+                if(newOne > highest){
+                    highest = newOne;
+                    mostSimilarUser = current;
+                }
+            }
+            current = current.next();
+        }
         // FILL IN CODE
-
 
         return mostSimilarUser;
 
@@ -77,6 +126,16 @@ public class UsersList {
      */
     public void print(String filename) {
         // FILL IN CODE
+        UserNode current = head;
+        try(PrintWriter pw = new PrintWriter(filename)){
+            while (current != null){
+                pw.write(current.toString());
+                current = current.next();
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 }
