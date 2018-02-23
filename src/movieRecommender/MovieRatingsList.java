@@ -352,7 +352,6 @@ public class MovieRatingsList implements Iterable<MovieRatingNode> {
 			current = current.next();
 		}
 		r.head = prev;
-		r.print();
 		return r;
 	}
 
